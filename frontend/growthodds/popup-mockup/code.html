@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Execute Move | GrowthOdds</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-tint": "#2d6956",
+              "surface-bright": "#f9f9f8",
+              "secondary-fixed": "#ffdad6",
+              "surface": "#f9f9f8",
+              "secondary": "#b6171e",
+              "on-primary-fixed": "#002117",
+              "surface-dim": "#d9dad9",
+              "on-background": "#191c1c",
+              "on-surface": "#191c1c",
+              "primary-fixed-dim": "#96d3bc",
+              "on-secondary-container": "#fffbff",
+              "on-primary-container": "#81bda7",
+              "primary": "#003528",
+              "on-tertiary-container": "#e79f92",
+              "tertiary-container": "#69352c",
+              "on-primary-fixed-variant": "#10503f",
+              "on-error": "#ffffff",
+              "inverse-surface": "#2e3131",
+              "on-secondary": "#ffffff",
+              "tertiary-fixed": "#ffdad4",
+              "inverse-primary": "#96d3bc",
+              "on-secondary-fixed": "#410003",
+              "inverse-on-surface": "#f0f1f0",
+              "on-tertiary": "#ffffff",
+              "surface-container-high": "#e7e8e7",
+              "primary-fixed": "#b2efd8",
+              "tertiary-fixed-dim": "#ffb4a7",
+              "on-tertiary-fixed": "#370e08",
+              "tertiary": "#4e2018",
+              "surface-container-low": "#f3f4f3",
+              "surface-variant": "#e1e3e2",
+              "primary-container": "#0a4d3c",
+              "on-surface-variant": "#404945",
+              "error-container": "#ffdad6",
+              "on-tertiary-fixed-variant": "#6d382f",
+              "outline-variant": "#bfc9c3",
+              "secondary-fixed-dim": "#ffb3ac",
+              "surface-container-lowest": "#ffffff",
+              "surface-container-highest": "#e1e3e2",
+              "outline": "#707974",
+              "surface-container": "#edeeed",
+              "on-primary": "#ffffff",
+              "on-error-container": "#93000a",
+              "background": "#f9f9f8",
+              "error": "#ba1a1a",
+              "secondary-container": "#da3433",
+              "on-secondary-fixed-variant": "#930010"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .glass-effect {
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+      }
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 4px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #bfc9c3;
+        border-radius: 10px;
+      }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TopNavBar -->
+<header class="fixed top-0 right-0 left-0 h-20 z-40 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-slate-200/15 dark:border-slate-800/15">
+<div class="max-w-7xl mx-auto flex items-center justify-between h-full px-8">
+<!-- Brand -->
+<div class="flex items-center gap-3 shrink-0">
+<div class="hidden sm:block">
+<h1 class="text-lg font-black text-[#003528] dark:text-emerald-500 uppercase tracking-widest font-headline leading-none">GrowthOdds</h1>
+</div>
+</div>
+<!-- Nav Links -->
+<nav class="flex items-center gap-1 md:gap-4 px-4">
+<a class="flex items-center gap-2 px-3 py-2 text-[#003528] dark:text-emerald-400 font-bold border-b-2 border-[#003528] dark:border-emerald-500 transition-all" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="dashboard">dashboard</span>
+<span class="font-headline text-sm">Home</span>
+</a>
+<a class="flex items-center gap-2 px-3 py-2 text-slate-500 dark:text-slate-400 hover:text-[#0a4d3c] dark:hover:text-emerald-200 transition-all" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="smart_toy">smart_toy</span>
+<span class="font-headline text-sm">Actions</span>
+</a>
+<a class="flex items-center gap-2 px-3 py-2 text-slate-500 dark:text-slate-400 hover:text-[#0a4d3c] dark:hover:text-emerald-200 transition-all" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="science">science</span>
+<span class="font-headline text-sm">Experiments</span>
+</a>
+</nav>
+<!-- Trailing actions & Profile -->
+<div class="flex items-center gap-4">
+<div class="hidden lg:flex items-center gap-2 bg-surface-container-high px-3 py-1.5 rounded-full">
+<span class="w-2 h-2 rounded-full bg-green-500"></span>
+<span class="text-xs font-semibold text-on-surface tracking-tight">Connected</span>
+</div>
+<div class="flex items-center gap-2 md:gap-4">
+<button class="text-slate-500 hover:text-primary opacity-80 hover:opacity-100 transition-all">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-slate-500 hover:text-primary opacity-80 hover:opacity-100 transition-all">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="h-8 w-8 rounded-full bg-surface-container-highest overflow-hidden border border-outline-variant/15 cursor-pointer opacity-80 hover:opacity-100 transition-opacity">
+<img alt="User Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5f0msn_ts-N8uqykhCiSmY7nCvduNGKaAOMnxA2xmKVyrljuPeQUufIG3mybPvhVW14cxaH2W4P0xOydEo0lTGj4XZxsx8y_CjIvc15jA1ga7smYIsAV7RGBVdL9KLpElh7j_7fq0JHGweBU_VV4m6malxmRwF8JUc_gHaxQein14duB6T5_PBuIKoqSOZGCNvFyVwapXzthKXrlweScPIolbkkBIaAACNhLIYy7wjg3zHxISJb93vy8y-kcPT35HjOjzt5wTwI-2"/>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Background (Simulated Screen_5) -->
+<main class="pt-24 min-h-screen px-8 pb-12 relative overflow-hidden">
+<!-- Dashboard Background Elements -->
+<div class="mx-auto space-y-12 blur-[2px] pointer-events-none opacity-40 max-w-5xl"><div class="max-w-5xl mx-auto px-6 md:px-12 py-16 md:py-24">
+<!-- Hero / Command Center -->
+<section class="mb-24 text-center">
+<div class="inline-flex items-center gap-2 mb-8 bg-surface-container-low px-4 py-2 rounded-full border border-outline-variant/10">
+<span class="material-symbols-outlined text-primary text-lg" data-icon="spade" style="font-variation-settings: 'FILL' 1;">swipe</span>
+<span class="text-xs font-bold uppercase tracking-widest text-primary font-headline">Recommended Move</span>
+</div>
+<h2 class="text-4xl md:text-6xl font-extrabold text-on-surface leading-[1.1] tracking-tight font-headline max-w-4xl mx-auto mb-10">
+                Next Best Action: Post a comparison of your product and its top competitor on X.
+            </h2>
+<div class="flex flex-col items-center gap-6">
+<button class="px-12 py-5 bg-gradient-to-br from-primary to-primary-container text-white font-headline text-lg font-bold rounded-xl shadow-[0_20px_40px_-15px_rgba(0,53,40,0.3)] hover:translate-y-[-2px] transition-all duration-300 active:scale-95 group">
+<span class="flex items-center gap-3">
+                        Run Action
+                        <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform" data-icon="trending_flat">trending_flat</span>
+</span>
+</button>
+<div class="flex items-center gap-2 text-on-surface-variant/60">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+</span>
+<span class="text-xs font-medium tracking-wide">System Ready: All platforms synced.</span>
+</div>
+</div>
+</section>
+<!-- Stats Ledger (Bento Style) -->
+<section>
+<div class="flex items-baseline justify-between mb-8">
+<h3 class="font-headline text-2xl font-bold text-primary">Your Stats</h3>
+<div class="h-[1px] flex-grow mx-8 bg-surface-variant/30"></div>
+<button class="text-sm font-bold text-on-surface-variant hover:text-primary transition-colors">Full Report</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Stat Card 1 -->
+<div class="bg-surface-container-lowest p-8 rounded-xl border border-outline-variant/10 hover:shadow-xl hover:shadow-black/[0.02] transition-all group">
+<div class="flex justify-between items-start mb-6">
+<span class="text-on-surface-variant font-label text-xs font-bold uppercase tracking-widest">Growth Base</span>
+<span class="material-symbols-outlined text-surface-variant group-hover:text-primary transition-colors" data-icon="groups">groups</span>
+</div>
+<div class="flex items-baseline gap-3">
+<span class="text-4xl font-headline font-black text-on-surface">142</span>
+<span class="text-sm font-bold text-primary bg-primary-fixed px-2 py-0.5 rounded-full">+12%</span>
+</div>
+<p class="text-xs text-on-surface-variant mt-2 font-medium">New Users this cycle</p>
+</div>
+<!-- Stat Card 2 -->
+<div class="bg-surface-container-lowest p-8 rounded-xl border border-outline-variant/10 hover:shadow-xl hover:shadow-black/[0.02] transition-all group">
+<div class="flex justify-between items-start mb-6">
+<span class="text-on-surface-variant font-label text-xs font-bold uppercase tracking-widest">Social Depth</span>
+<span class="material-symbols-outlined text-surface-variant group-hover:text-primary transition-colors" data-icon="rebase_edit">rebase_edit</span>
+</div>
+<div class="flex items-baseline gap-3">
+<span class="text-4xl font-headline font-black text-on-surface">1,234</span>
+</div>
+<p class="text-xs text-on-surface-variant mt-2 font-medium">X Engagement (Aggregated)</p>
+</div>
+<!-- Stat Card 3 -->
+<div class="bg-surface-container-lowest p-8 rounded-xl border border-outline-variant/10 hover:shadow-xl hover:shadow-black/[0.02] transition-all group">
+<div class="flex justify-between items-start mb-6">
+<span class="text-on-surface-variant font-label text-xs font-bold uppercase tracking-widest">Active Bets</span>
+<span class="material-symbols-outlined text-surface-variant group-hover:text-primary transition-colors" data-icon="science">science</span>
+</div>
+<div class="flex items-baseline gap-3">
+<span class="text-4xl font-headline font-black text-on-surface">3</span>
+</div>
+<p class="text-xs text-on-surface-variant mt-2 font-medium">Live growth experiments</p>
+</div>
+</div>
+</section>
+</div></div>
+<!-- Modal Overlay -->
+<div class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-on-background/30 backdrop-blur-sm">
+<div class="glass-effect w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden flex flex-col border border-outline-variant/10">
+<!-- Modal Header -->
+<div class="px-8 py-6 flex justify-between items-center border-b border-outline-variant/10">
+<div class="flex items-center gap-3">
+<div class="bg-primary p-2 rounded-lg">
+<span class="material-symbols-outlined text-white text-xl" data-icon="spade" style="font-variation-settings: 'FILL' 1;">swipe</span>
+</div>
+<h2 class="font-headline text-2xl font-bold tracking-tight text-primary">Execute Move</h2>
+</div>
+<button class="text-on-surface-variant hover:text-on-surface transition-colors p-2 rounded-full hover:bg-surface-container-high">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+</div>
+<!-- Modal Body -->
+<div class="p-8 space-y-8 overflow-y-auto max-h-[716px] custom-scrollbar">
+<!-- Action Summary Section -->
+<section>
+<div class="flex items-center gap-2 mb-4">
+<span class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Action Summary</span>
+</div>
+<div class="bg-surface-container-low rounded-xl p-6 border-l-4 border-primary">
+<h3 class="font-headline font-bold text-lg text-primary mb-2">Post comparison of your product and its top competitor on X</h3>
+<div class="flex flex-wrap gap-4 mt-4">
+<div class="flex items-center gap-2 bg-surface-container-lowest px-3 py-1.5 rounded-full border border-outline-variant/20 shadow-sm">
+<span class="material-symbols-outlined text-sm text-on-surface-variant" data-icon="info">info</span>
+<span class="text-xs font-semibold text-on-surface-variant">Reason: High engagement on competitor threads</span>
+</div>
+<div class="flex items-center gap-2 bg-primary-fixed px-3 py-1.5 rounded-full border border-primary/10 shadow-sm">
+<span class="material-symbols-outlined text-sm text-primary" data-icon="trending_up" style="font-variation-settings: 'FILL' 1;">trending_up</span>
+<span class="text-xs font-bold text-primary">Odds: 84.2% Success</span>
+</div>
+</div>
+</div>
+</section>
+<!-- User Input Section -->
+<section>
+<div class="flex items-center gap-2 mb-4">
+<span class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Steering Input</span>
+</div>
+<div class="relative group">
+<input class="w-full bg-surface-container-low border-0 border-b-2 border-transparent focus:border-primary focus:ring-0 rounded-lg p-4 font-medium placeholder:text-outline transition-all group-hover:bg-surface-container" placeholder="e.g., focus on new features or highlight pricing" type="text"/>
+<div class="absolute right-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-outline" data-icon="keyboard_command_key">keyboard_command_key</span>
+</div>
+</div>
+</section>
+<!-- Generated Content Section -->
+<section>
+<div class="flex justify-between items-center mb-4">
+<span class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">AI Generated Post</span>
+<button class="flex items-center gap-1.5 text-xs font-bold text-primary hover:underline">
+<span class="material-symbols-outlined text-sm" data-icon="refresh">refresh</span>
+                                Regnerate
+                            </button>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-6 shadow-inner">
+<textarea class="w-full h-32 bg-transparent border-0 focus:ring-0 p-0 text-on-surface leading-relaxed font-medium resize-none custom-scrollbar" spellcheck="false">Our new dashboard outperforms the competition by simplifying the user journey. See why GrowthOdds is the new standard for startups. #Growth #Startup</textarea>
+<div class="flex justify-end gap-3 mt-4 pt-4 border-t border-outline-variant/10">
+<span class="text-[10px] font-bold text-outline-variant uppercase">142 Characters</span>
+<span class="material-symbols-outlined text-on-surface-variant text-sm" data-icon="content_copy">content_copy</span>
+</div>
+</div>
+</section>
+</div>
+<!-- Modal Footer -->
+<div class="px-8 py-6 bg-surface-container-low/50 flex items-center justify-between">
+<button class="px-6 py-3 font-bold text-on-surface-variant hover:text-on-surface transition-colors">
+                        Cancel
+                    </button>
+<button class="bg-gradient-to-br from-primary to-primary-container text-white px-10 py-3.5 rounded-lg font-bold shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center gap-2">
+                        Execute Action
+                        <span class="material-symbols-outlined text-xl" data-icon="send">send</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<!-- FAB Suppression Logic: Not rendering FAB on this details/transactional screen -->
+</body></html>
