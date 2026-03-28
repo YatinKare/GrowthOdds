@@ -58,3 +58,6 @@ backend/routes/__pycache__/api.cpython-313.pyc
 backend/db/__pycache__/session.cpython-313.pyc
 backend/services/__pycache__/experiment_service.cpython-313.pyc
 backend/services/__pycache__/__init__.cpython-313.pyc
+agents/generate_suggestions/__pycache__/agent.cpython-313.pyc
+backend/db/__pycache__/session.cpython-313.pyc
+backend/db/__pycache__/session.cpython-313.pyc
