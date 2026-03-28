@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GrowthOdds | Experiment Detail</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-dim": "#d9dad9",
+                        "tertiary-fixed-dim": "#ffb4a7",
+                        "surface": "#f9f9f8",
+                        "inverse-surface": "#2e3131",
+                        "background": "#f9f9f8",
+                        "on-error": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-container": "#e79f92",
+                        "on-secondary-fixed": "#410003",
+                        "on-surface": "#191c1c",
+                        "on-primary-container": "#81bda7",
+                        "surface-variant": "#e1e3e2",
+                        "surface-container-low": "#f3f4f3",
+                        "on-tertiary-fixed": "#370e08",
+                        "surface-container-lowest": "#ffffff",
+                        "primary": "#003528",
+                        "on-tertiary-fixed-variant": "#6d382f",
+                        "surface-container": "#edeeed",
+                        "on-secondary-fixed-variant": "#930010",
+                        "outline-variant": "#bfc9c3",
+                        "surface-tint": "#2d6956",
+                        "on-surface-variant": "#404945",
+                        "surface-container-high": "#e7e8e7",
+                        "primary-container": "#0a4d3c",
+                        "on-secondary-container": "#fffbff",
+                        "surface-bright": "#f9f9f8",
+                        "inverse-primary": "#96d3bc",
+                        "outline": "#707974",
+                        "on-primary-fixed": "#002117",
+                        "on-primary": "#ffffff",
+                        "primary-fixed": "#b2efd8",
+                        "on-error-container": "#93000a",
+                        "surface-container-highest": "#e1e3e2",
+                        "primary-fixed-dim": "#96d3bc",
+                        "tertiary-container": "#69352c",
+                        "secondary-fixed": "#ffdad6",
+                        "secondary": "#b6171e",
+                        "secondary-container": "#da3433",
+                        "on-tertiary": "#ffffff",
+                        "on-background": "#191c1c",
+                        "inverse-on-surface": "#f0f1f0",
+                        "tertiary-fixed": "#ffdad4",
+                        "on-primary-fixed-variant": "#10503f",
+                        "error": "#ba1a1a",
+                        "tertiary": "#4e2018",
+                        "secondary-fixed-dim": "#ffb3ac",
+                        "error-container": "#ffdad6"
+                    },
+                    fontFamily: {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+        }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface antialiased">
+<!-- TopNavBar Implementation -->
+<nav class="bg-stone-50 dark:bg-stone-950 sticky top-0 z-50">
+<div class="flex justify-between items-center w-full px-8 py-4 max-w-screen-2xl mx-auto">
+<div class="flex items-center gap-8">
+<span class="text-xl font-black tracking-tighter text-emerald-950 dark:text-emerald-50 font-['Manrope']">GROWTHODDS</span>
+<div class="hidden md:flex gap-6">
+<a class="text-stone-500 dark:text-stone-400 font-medium hover:text-emerald-800 dark:hover:text-emerald-200 transition-colors font-['Manrope'] tracking-tight" href="#">Home</a>
+<a class="text-stone-500 dark:text-stone-400 font-medium hover:text-emerald-800 dark:hover:text-emerald-200 transition-colors font-['Manrope'] tracking-tight" href="#">Actions</a>
+<a class="text-emerald-900 dark:text-emerald-400 font-bold border-b-2 border-emerald-900 dark:border-emerald-400 pb-1 font-['Manrope'] tracking-tight" href="#">Experiments</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full hover:bg-stone-100 dark:hover:bg-stone-800 transition-all Active: scale-95 duration-150 ease-in-out">
+<span class="material-symbols-outlined text-emerald-900 dark:text-emerald-500" data-icon="account_balance_wallet">account_balance_wallet</span>
+</button>
+<button class="p-2 rounded-full hover:bg-stone-100 dark:hover:bg-stone-800 transition-all Active: scale-95 duration-150 ease-in-out">
+<span class="material-symbols-outlined text-emerald-900 dark:text-emerald-500" data-icon="notifications">notifications</span>
+</button>
+<div class="h-8 w-8 rounded-full bg-stone-200 overflow-hidden">
+<img alt="User profile avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBX6sYM7Gf15dcU9zQotrq2ThzXA85tfn7kv36-Hg7kTqCGu5StqFA4Ru7DgfU4b9suXl31Aowcy8jRwr1z3uqIPP5Ntu1SQUfSIGvrydKCMNFK5jALpWCCB5ofIEsD1l5PlvBd9HQQnyAOisPSaQcuo0s_ZPjiyuCw4oTk3MBzfLpiYti_niL-ygqrAgNhrbk-zx_lKkxoiOx7LZBVlDtILkG1-v_YoMhgyDBJvcKQ7Z7yll0gmXyLPgTelxCfK2XtTFZJOjpUU3CL"/>
+</div>
+</div>
+</div>
+</nav>
+<main class="max-w-4xl mx-auto px-6 py-12 md:py-20">
+<!-- Breadcrumb & Header -->
+<header class="mb-12">
+<nav class="flex items-center gap-2 text-on-surface-variant mb-4 font-label text-sm uppercase tracking-widest">
+<span>Experiments</span>
+<span class="material-symbols-outlined text-xs" data-icon="chevron_right">chevron_right</span>
+<span class="text-primary font-bold">X Thread Comparison</span>
+</nav>
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<h1 class="text-4xl md:text-5xl font-headline font-extrabold tracking-tighter text-primary leading-tight">
+                        Competitive Comparison
+                    </h1>
+</div>
+</div>
+</header>
+<!-- Metric Section: The Big Numbers -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
+<div class="bg-surface-container-low p-8 rounded-xl flex flex-col justify-between">
+<span class="font-label text-sm text-on-surface-variant uppercase tracking-widest mb-4">Total Clicks</span>
+<div class="flex items-baseline gap-2">
+<span class="text-6xl font-headline font-black text-primary tracking-tighter">14,802</span>
+<span class="text-primary-container font-bold">+12%</span>
+</div>
+</div>
+<div class="bg-surface-container-low p-8 rounded-xl flex flex-col justify-between">
+<span class="font-label text-sm text-on-surface-variant uppercase tracking-widest mb-4">Unique Users</span>
+<div class="flex items-baseline gap-2">
+<span class="text-6xl font-headline font-black text-primary tracking-tighter">8,440</span>
+<span class="text-primary-container font-bold">+4.2%</span>
+</div>
+</div>
+</section>
+<!-- Results Section: AI Insights -->
+<section class="mb-16">
+<div class="glass-card p-10 rounded-xl shadow-2xl shadow-primary/5 relative overflow-hidden">
+<div class="absolute top-0 right-0 p-8 opacity-5">
+<span class="material-symbols-outlined text-8xl" data-icon="psychology">psychology</span>
+</div>
+<div class="relative z-10">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary" data-icon="auto_awesome">auto_awesome</span>
+<h2 class="font-headline font-bold text-2xl text-primary">Strategic Outcome</h2>
+</div>
+<p class="text-xl text-on-surface leading-relaxed mb-8">
+                        The data reveals a decisive shift in user sentiment. <span class="font-bold text-primary">Variation A outperformed Variation B by 22%</span>, specifically when utilizing a direct, high-urgency messaging style. Users engaged 3x more frequently with data-backed claims than with purely narrative-driven hooks.
+                    </p>
+<div class="flex flex-wrap gap-4">
+<span class="bg-surface-container-high px-4 py-2 rounded-lg font-label text-sm font-semibold">DIRECT STYLE</span>
+<span class="bg-surface-container-high px-4 py-2 rounded-lg font-label text-sm font-semibold">URGENCY HOOKS</span>
+<span class="bg-surface-container-high px-4 py-2 rounded-lg font-label text-sm font-semibold">DATA-FIRST</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Core Section: Past Actions -->
+<section class="mb-20">
+<div class="flex items-center justify-between mb-8">
+<h3 class="font-headline font-bold text-2xl text-primary">Execution Timeline</h3>
+<button class="bg-primary text-white font-label font-bold px-6 py-2 rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+                    New Step
+                </button>
+</div>
+<div class="space-y-4">
+<!-- Action Item 1 -->
+<div class="group flex items-center justify-between p-6 bg-surface-container-lowest rounded-xl hover:bg-white transition-colors">
+<div class="flex items-center gap-6">
+<div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="first_page">first_page</span>
+</div>
+<div>
+<h4 class="font-bold text-lg text-primary">Initial Post Deployment</h4>
+<p class="text-on-surface-variant text-sm">Targeted at Series A Founders in FinTech</p>
+</div>
+</div>
+<div class="text-right">
+<span class="block font-bold text-primary">Oct 12</span>
+<span class="text-xs text-on-surface-variant uppercase tracking-tighter">Completed</span>
+</div>
+</div>
+<!-- Action Item 2 -->
+<div class="group flex items-center justify-between p-6 bg-surface-container-lowest rounded-xl hover:bg-white transition-colors">
+<div class="flex items-center gap-6">
+<div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="reply">reply</span>
+</div>
+<div>
+<h4 class="font-bold text-lg text-primary">Follow-up Thread Reply</h4>
+<p class="text-on-surface-variant text-sm">Automated response based on high engagement</p>
+</div>
+</div>
+<div class="text-right">
+<span class="block font-bold text-primary">Oct 14</span>
+<span class="text-xs text-on-surface-variant uppercase tracking-tighter">Completed</span>
+</div>
+</div>
+<!-- Action Item 3 -->
+<div class="group flex items-center justify-between p-6 bg-surface-container-lowest rounded-xl hover:bg-white transition-colors">
+<div class="flex items-center gap-6">
+<div class="w-12 h-12 rounded-full bg-primary-container flex items-center justify-center text-white">
+<span class="material-symbols-outlined" data-icon="split_screen">splitscreen</span>
+</div>
+<div>
+<h4 class="font-bold text-lg text-primary">A/B Test Variant B Launch</h4>
+<p class="text-on-surface-variant text-sm">Testing aggressive vs subtle CTAs</p>
+</div>
+</div>
+<div class="text-right">
+<span class="block font-bold text-primary">Oct 15</span>
+<span class="text-xs text-emerald-600 font-bold uppercase tracking-tighter">Active</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+</body></html>

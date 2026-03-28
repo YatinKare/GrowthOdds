@@ -1,4 +1,6 @@
 <script lang="ts">
+	import AppNavbar from '$lib/components/AppNavbar.svelte';
+
 	type IconName =
 		| 'dashboard'
 		| 'actions'
@@ -18,12 +20,6 @@
 		| 'copy'
 		| 'send';
 
-	type NavItem = {
-		label: string;
-		icon: IconName;
-		active?: boolean;
-	};
-
 	type StatCard = {
 		label: string;
 		value: string;
@@ -31,15 +27,6 @@
 		icon: IconName;
 		change?: string;
 	};
-
-	const profileImage =
-		'https://lh3.googleusercontent.com/aida-public/AB6AXuB5f0msn_ts-N8uqykhCiSmY7nCvduNGKaAOMnxA2xmKVyrljuPeQUufIG3mybPvhVW14cxaH2W4P0xOydEo0lTGj4XZxsx8y_CjIvc15jA1ga7smYIsAV7RGBVdL9KLpElh7j_7fq0JHGweBU_VV4m6malxmRwF8JUc_gHaxQein14duB6T5_PBuIKoqSOZGCNvFyVwapXzthKXrlweScPIolbkkBIaAACNhLIYy7wjg3zHxISJb93vy8y-kcPT35HjOjzt5wTwI-2';
-
-	const navItems: NavItem[] = [
-		{ label: 'Home', icon: 'dashboard', active: true },
-		{ label: 'Actions', icon: 'actions' },
-		{ label: 'Experiments', icon: 'experiments' }
-	];
 
 	const statCards: StatCard[] = [
 		{
@@ -156,118 +143,7 @@
 </svelte:head>
 
 <div class="min-h-screen text-[var(--color-foreground)]">
-	<header class="fixed inset-x-0 top-0 z-40 border-b border-black/5 bg-white/80 backdrop-blur-xl">
-		<div class="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 md:px-8">
-			<div class="flex shrink-0 items-center gap-3">
-				<div class="hidden sm:block">
-					<p
-						class="font-display text-lg font-extrabold tracking-[0.35em] text-[var(--color-primary)] uppercase"
-					>
-						GrowthOdds
-					</p>
-				</div>
-			</div>
-
-			<nav class="flex items-center gap-1 rounded-full bg-white/60 p-1 md:gap-2">
-				{#each navItems as item (item.label)}
-					<button
-						type="button"
-						aria-current={item.active ? 'page' : undefined}
-						class={[
-							'inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm transition-colors md:px-4',
-							item.active
-								? 'bg-[var(--color-primary-fixed)] font-semibold text-[var(--color-primary)]'
-								: 'text-black/45 hover:text-[var(--color-primary-soft)]'
-						]}
-					>
-						<span
-							class={[
-								'inline-flex h-8 w-8 items-center justify-center rounded-full',
-								item.active
-									? 'bg-white text-[var(--color-primary)]'
-									: 'bg-[var(--color-surface-low)] text-black/55'
-							]}
-						>
-							<svg
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="1.65"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								class="h-4 w-4"
-								aria-hidden="true"
-							>
-								{#each iconPaths[item.icon] as path (`${item.icon}-${path}`)}
-									<path d={path}></path>
-								{/each}
-							</svg>
-						</span>
-						<span class="font-display text-sm font-bold">{item.label}</span>
-					</button>
-				{/each}
-			</nav>
-
-			<div class="flex items-center gap-3 md:gap-4">
-				<div
-					class="hidden items-center gap-2 rounded-full bg-[var(--color-surface-low)] px-3 py-1.5 lg:flex"
-				>
-					<span class="h-2 w-2 rounded-full bg-emerald-500"></span>
-					<span class="text-xs font-semibold text-[var(--color-foreground)]">Connected</span>
-				</div>
-
-				<button
-					type="button"
-					aria-label="Notifications"
-					class="inline-flex h-10 w-10 items-center justify-center rounded-full text-black/50 transition-colors hover:bg-[var(--color-surface-low)] hover:text-[var(--color-primary)]"
-				>
-					<svg
-						viewBox="0 0 24 24"
-						fill="none"
-						stroke="currentColor"
-						stroke-width="1.65"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						class="h-5 w-5"
-						aria-hidden="true"
-					>
-						{#each iconPaths.notifications as path (`notifications-${path}`)}
-							<path d={path}></path>
-						{/each}
-					</svg>
-				</button>
-
-				<button
-					type="button"
-					aria-label="Settings"
-					class="inline-flex h-10 w-10 items-center justify-center rounded-full text-black/50 transition-colors hover:bg-[var(--color-surface-low)] hover:text-[var(--color-primary)]"
-				>
-					<svg
-						viewBox="0 0 24 24"
-						fill="none"
-						stroke="currentColor"
-						stroke-width="1.65"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						class="h-5 w-5"
-						aria-hidden="true"
-					>
-						{#each iconPaths.settings as path (`settings-${path}`)}
-							<path d={path}></path>
-						{/each}
-					</svg>
-				</button>
-
-				<button
-					type="button"
-					aria-label="Profile"
-					class="h-10 w-10 overflow-hidden rounded-full border border-black/8 shadow-sm transition-transform hover:-translate-y-0.5"
-				>
-					<img src={profileImage} alt="User profile" class="h-full w-full object-cover" />
-				</button>
-			</div>
-		</div>
-	</header>
+	<AppNavbar activeItem="Home" />
 
 	<main class="pt-20">
 		<div class="mx-auto max-w-6xl px-6 py-16 md:px-12 md:py-24">
@@ -428,10 +304,16 @@
 
 		<section class="fixed inset-0 z-[60] overflow-y-auto">
 			<div class="flex min-h-full items-center justify-center p-4 md:p-6">
-				<div class="w-full max-w-[36rem] overflow-hidden rounded-[1.6rem] border border-black/6 bg-white/88 shadow-[0_28px_70px_rgba(25,28,28,0.22)] backdrop-blur-xl">
-					<header class="flex items-center justify-between border-b border-black/6 px-6 py-5 md:px-7">
+				<div
+					class="w-full max-w-[36rem] overflow-hidden rounded-[1.6rem] border border-black/6 bg-white/88 shadow-[0_28px_70px_rgba(25,28,28,0.22)] backdrop-blur-xl"
+				>
+					<header
+						class="flex items-center justify-between border-b border-black/6 px-6 py-5 md:px-7"
+					>
 						<div class="flex items-center gap-3">
-							<span class="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-[var(--color-primary)] text-white shadow-[0_12px_24px_rgba(0,53,40,0.2)]">
+							<span
+								class="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-[var(--color-primary)] text-white shadow-[0_12px_24px_rgba(0,53,40,0.2)]"
+							>
 								<svg
 									viewBox="0 0 24 24"
 									fill="none"
@@ -448,7 +330,9 @@
 								</svg>
 							</span>
 
-							<h2 class="font-display text-[1.9rem] font-extrabold tracking-tight text-[var(--color-primary)]">
+							<h2
+								class="font-display text-[1.9rem] font-extrabold tracking-tight text-[var(--color-primary)]"
+							>
 								Execute Move
 							</h2>
 						</div>
@@ -478,21 +362,27 @@
 
 					<div class="modal-scroll max-h-[44rem] space-y-8 overflow-y-auto px-6 py-6 md:px-7">
 						<section class="space-y-4">
-							<p class="text-[0.68rem] font-bold uppercase tracking-[0.24em] text-black/45">
+							<p class="text-[0.68rem] font-bold tracking-[0.24em] text-black/45 uppercase">
 								Action Summary
 							</p>
 
-							<div class="rounded-[1.25rem] border border-black/5 bg-[var(--color-surface-low)] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.65)]">
+							<div
+								class="rounded-[1.25rem] border border-black/5 bg-[var(--color-surface-low)] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.65)]"
+							>
 								<div class="flex gap-4">
 									<div class="w-1 rounded-full bg-[var(--color-primary)]"></div>
 
 									<div class="flex-1">
-										<h3 class="font-display text-[1.35rem] font-extrabold leading-tight text-[var(--color-primary)]">
+										<h3
+											class="font-display text-[1.35rem] leading-tight font-extrabold text-[var(--color-primary)]"
+										>
 											{actionTitle}
 										</h3>
 
 										<div class="mt-4 flex flex-wrap gap-3">
-											<div class="inline-flex items-center gap-2 rounded-full border border-black/6 bg-white px-3 py-2 text-xs font-semibold text-black/55 shadow-sm">
+											<div
+												class="inline-flex items-center gap-2 rounded-full border border-black/6 bg-white px-3 py-2 text-xs font-semibold text-black/55 shadow-sm"
+											>
 												<svg
 													viewBox="0 0 24 24"
 													fill="none"
@@ -510,7 +400,9 @@
 												<span>{actionReason}</span>
 											</div>
 
-											<div class="inline-flex items-center gap-2 rounded-full bg-[var(--color-primary-fixed)] px-3 py-2 text-xs font-bold text-[var(--color-primary)] shadow-sm">
+											<div
+												class="inline-flex items-center gap-2 rounded-full bg-[var(--color-primary-fixed)] px-3 py-2 text-xs font-bold text-[var(--color-primary)] shadow-sm"
+											>
 												<svg
 													viewBox="0 0 24 24"
 													fill="none"
@@ -534,20 +426,20 @@
 						</section>
 
 						<section class="space-y-4">
-							<p class="text-[0.68rem] font-bold uppercase tracking-[0.24em] text-black/45">
+							<p class="text-[0.68rem] font-bold tracking-[0.24em] text-black/45 uppercase">
 								Steering Input
 							</p>
 
 							<input
 								type="text"
 								placeholder={steeringPlaceholder}
-								class="w-full rounded-[1rem] border border-transparent bg-[var(--color-surface-low)] px-4 py-3.5 text-sm font-medium text-[var(--color-foreground)] outline-none transition focus:border-[var(--color-primary)]/20 focus:bg-white focus:ring-2 focus:ring-[var(--color-primary)]/10"
+								class="w-full rounded-[1rem] border border-transparent bg-[var(--color-surface-low)] px-4 py-3.5 text-sm font-medium text-[var(--color-foreground)] transition outline-none focus:border-[var(--color-primary)]/20 focus:bg-white focus:ring-2 focus:ring-[var(--color-primary)]/10"
 							/>
 						</section>
 
 						<section class="space-y-4">
 							<div class="flex items-center justify-between gap-4">
-								<p class="text-[0.68rem] font-bold uppercase tracking-[0.24em] text-black/45">
+								<p class="text-[0.68rem] font-bold tracking-[0.24em] text-black/45 uppercase">
 									AI Generated Post
 								</p>
 
@@ -573,14 +465,17 @@
 								</button>
 							</div>
 
-							<div class="rounded-[1.25rem] border border-black/5 bg-white p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.65),0_20px_40px_rgba(25,28,28,0.03)]">
+							<div
+								class="rounded-[1.25rem] border border-black/5 bg-white p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.65),0_20px_40px_rgba(25,28,28,0.03)]"
+							>
 								<textarea
 									readonly
 									class="modal-scroll min-h-44 w-full resize-none border-0 bg-transparent p-0 text-base leading-8 text-[var(--color-foreground)] outline-none"
-								>{generatedPost}</textarea>
+									>{generatedPost}</textarea
+								>
 
 								<div class="mt-4 flex items-center justify-end gap-3 border-t border-black/6 pt-4">
-									<span class="text-[0.62rem] font-bold uppercase tracking-[0.18em] text-black/25">
+									<span class="text-[0.62rem] font-bold tracking-[0.18em] text-black/25 uppercase">
 										142 Characters
 									</span>
 
@@ -609,7 +504,9 @@
 						</section>
 					</div>
 
-					<footer class="flex items-center justify-between bg-[linear-gradient(180deg,rgba(243,244,243,0.55),rgba(243,244,243,0.8))] px-6 py-5 md:px-7">
+					<footer
+						class="flex items-center justify-between bg-[linear-gradient(180deg,rgba(243,244,243,0.55),rgba(243,244,243,0.8))] px-6 py-5 md:px-7"
+					>
 						<button
 							type="button"
 							onclick={() => (isModalOpen = false)}
