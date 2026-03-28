@@ -18,7 +18,8 @@
 		| 'trend'
 		| 'refresh'
 		| 'copy'
-		| 'send';
+		| 'send'
+		| 'command';
 
 	type StatCard = {
 		label: string;
@@ -53,10 +54,10 @@
 	const actionTitle = 'Post comparison of your product and its top competitor on X';
 	const actionReason = 'Reason: High engagement on competitor threads';
 	const actionOdds = 'Odds: 84.2% Success';
-	const steeringPlaceholder = 'e.g., focus on new features or highlight pricing';
-	const generatedPost =
-		'Our new dashboard outperforms the competition by simplifying the user journey. See why GrowthOdds is the new standard for startups. #Growth #Startup';
+	const steeringPlaceholder =
+		'Describe the specifics of your move here (e.g., focus on new features, highlight pricing, or set a specific tone)...';
 	let isModalOpen = $state(false);
+	let experimentMode = $state<'single' | 'ab'>('ab');
 
 	$effect(() => {
 		const previousOverflow = document.body.style.overflow;
@@ -133,7 +134,11 @@
 			'M9.25 9.25h7.5a1 1 0 0 1 1 1v7.5a1 1 0 0 1-1 1h-7.5a1 1 0 0 1-1-1v-7.5a1 1 0 0 1 1-1Z',
 			'M7.5 14.75h-1.25a1 1 0 0 1-1-1v-7.5a1 1 0 0 1 1-1h7.5a1 1 0 0 1 1 1V7.5'
 		],
-		send: ['M4.75 12h12.5', 'M13.75 7 19 12l-5.25 5']
+		send: ['M4.75 12h12.5', 'M13.75 7 19 12l-5.25 5'],
+		command: [
+			'M8.5 7.25a2.25 2.25 0 1 0 0 4.5h7a2.25 2.25 0 1 1 0 4.5h-7a2.25 2.25 0 1 0 0 4.5',
+			'M12 6v12'
+		]
 	};
 </script>
 
@@ -362,9 +367,38 @@
 
 					<div class="modal-scroll max-h-[44rem] space-y-8 overflow-y-auto px-6 py-6 md:px-7">
 						<section class="space-y-4">
-							<p class="text-[0.68rem] font-bold tracking-[0.24em] text-black/45 uppercase">
-								Action Summary
-							</p>
+							<div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+								<p class="text-[0.68rem] font-bold tracking-[0.24em] text-black/45 uppercase">
+									Experiment: Social Post (X)
+								</p>
+
+								<div
+									class="inline-flex w-fit items-center gap-1 rounded-xl border border-black/6 bg-[var(--color-surface-low)] p-1"
+								>
+									<button
+										type="button"
+										onclick={() => (experimentMode = 'single')}
+										class={`rounded-[0.7rem] px-4 py-2 text-xs font-bold transition ${
+											experimentMode === 'single'
+												? 'bg-white text-[var(--color-primary)] shadow-sm'
+												: 'text-black/45 hover:text-[var(--color-foreground)]'
+										}`}
+									>
+										Single Post
+									</button>
+									<button
+										type="button"
+										onclick={() => (experimentMode = 'ab')}
+										class={`rounded-[0.7rem] px-4 py-2 text-xs font-bold transition ${
+											experimentMode === 'ab'
+												? 'bg-white text-[var(--color-primary)] shadow-sm'
+												: 'text-black/45 hover:text-[var(--color-foreground)]'
+										}`}
+									>
+										A/B Test
+									</button>
+								</div>
+							</div>
 
 							<div
 								class="rounded-[1.25rem] border border-black/5 bg-[var(--color-surface-low)] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.65)]"
@@ -426,63 +460,28 @@
 						</section>
 
 						<section class="space-y-4">
-							<p class="text-[0.68rem] font-bold tracking-[0.24em] text-black/45 uppercase">
-								Steering Input
+							<p class="px-1 text-[0.68rem] font-bold tracking-[0.24em] text-black/45 uppercase">
+								Input
 							</p>
 
-							<input
-								type="text"
-								placeholder={steeringPlaceholder}
-								class="w-full rounded-[1rem] border border-transparent bg-[var(--color-surface-low)] px-4 py-3.5 text-sm font-medium text-[var(--color-foreground)] transition outline-none focus:border-[var(--color-primary)]/20 focus:bg-white focus:ring-2 focus:ring-[var(--color-primary)]/10"
-							/>
-						</section>
-
-						<section class="space-y-4">
-							<div class="flex items-center justify-between gap-4">
-								<p class="text-[0.68rem] font-bold tracking-[0.24em] text-black/45 uppercase">
-									AI Generated Post
-								</p>
-
-								<button
-									type="button"
-									class="inline-flex items-center gap-1.5 text-xs font-bold text-[var(--color-primary)] transition hover:opacity-70"
-								>
-									<svg
-										viewBox="0 0 24 24"
-										fill="none"
-										stroke="currentColor"
-										stroke-width="1.75"
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										class="h-3.5 w-3.5"
-										aria-hidden="true"
-									>
-										{#each iconPaths.refresh as path (`refresh-${path}`)}
-											<path d={path}></path>
-										{/each}
-									</svg>
-									<span>Regenerate</span>
-								</button>
-							</div>
-
 							<div
-								class="rounded-[1.25rem] border border-black/5 bg-white p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.65),0_20px_40px_rgba(25,28,28,0.03)]"
+								class="rounded-[1.25rem] border border-black/6 bg-white p-5 shadow-[0_18px_40px_rgba(25,28,28,0.04)] transition focus-within:ring-2 focus-within:ring-[var(--color-primary)]/10"
 							>
 								<textarea
-									readonly
-									class="modal-scroll min-h-44 w-full resize-none border-0 bg-transparent p-0 text-base leading-8 text-[var(--color-foreground)] outline-none"
-									>{generatedPost}</textarea
-								>
+									placeholder={steeringPlaceholder}
+									spellcheck="false"
+									class="modal-scroll min-h-48 w-full resize-none border-0 bg-transparent p-0 text-sm leading-7 font-medium text-[var(--color-foreground)] outline-none"
+								></textarea>
 
 								<div class="mt-4 flex items-center justify-end gap-3 border-t border-black/6 pt-4">
-									<span class="text-[0.62rem] font-bold tracking-[0.18em] text-black/25 uppercase">
-										142 Characters
+									<span class="text-[0.62rem] font-bold tracking-[0.18em] text-black/35 uppercase">
+										Manual Steering
 									</span>
 
 									<button
 										type="button"
-										aria-label="Copy generated post"
-										class="inline-flex h-7 w-7 items-center justify-center rounded-full text-black/45 transition hover:bg-[var(--color-surface-low)] hover:text-[var(--color-primary)]"
+										aria-label="Manual steering shortcut"
+										class="inline-flex h-8 w-8 items-center justify-center rounded-full text-black/45 transition hover:bg-[var(--color-surface-low)] hover:text-[var(--color-primary)]"
 									>
 										<svg
 											viewBox="0 0 24 24"
@@ -494,7 +493,7 @@
 											class="h-4 w-4"
 											aria-hidden="true"
 										>
-											{#each iconPaths.copy as path (`copy-${path}`)}
+											{#each iconPaths.command as path (`command-${path}`)}
 												<path d={path}></path>
 											{/each}
 										</svg>

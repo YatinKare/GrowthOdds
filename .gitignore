@@ -63,3 +63,4 @@ backend/services/__pycache__/__init__.cpython-313.pyc
 agents/generate_suggestions/__pycache__/agent.cpython-313.pyc
 backend/db/__pycache__/session.cpython-313.pyc
 backend/db/__pycache__/session.cpython-313.pyc
+frontend/growthodds/popup-mockup/updated-code.html
