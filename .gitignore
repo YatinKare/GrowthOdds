@@ -39,3 +39,10 @@ agents/generate_suggestions/.env
 
 #mcp
 .gemini/
+
+# uv init
+agents/.python-version
+agents/generate_suggestions/.adk/*
+agents/generate_suggestions/__pycache__/*
+agents/generate_suggestions/__pycache__/agent.cpython-313.pyc
+agents/uv.lock
