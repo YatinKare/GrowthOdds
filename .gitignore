@@ -42,7 +42,8 @@ agents/generate_suggestions/.env
 
 # uv init
 agents/.python-version
-agents/generate_suggestions/.adk/*
-agents/generate_suggestions/__pycache__/*
-agents/generate_suggestions/__pycache__/agent.cpython-313.pyc
+agents/generate_suggestions/.adk
+agents/generate_suggestions/__pycache__
 agents/uv.lock
+
+
