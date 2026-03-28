@@ -52,6 +52,17 @@ curl -X GET "http://127.0.0.1:8000/api/v1/experiment/<YOUR-UUID-HERE>" | json_pp
 ```
 *(If you do not have `json_pp` or `jq`, you can just paste the URL in your browser).*
 
+**Polling Statuses (`experiment.status`)**
+When polling the GET endpoint, you should monitor the `status` string on the `experiment` object. It can be one of four values:
+- `"queued"`: Received by the backend, waiting to be sent to ADK.
+- `"running"`: Currently being processed by the Google ADK.
+- `"completed"`: Agent generated the result successfully.
+- `"failed"`: An exception occurred during generation.
+
+**Terminal States**
+The frontend should continuously poll (e.g., every 3 seconds) until it hits a **terminal state**. The terminal states where polling should stop are `"completed"` and `"failed"`.
+
+
 ---
 
 ## 3. Stopping the Services

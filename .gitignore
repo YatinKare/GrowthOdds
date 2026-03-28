@@ -64,3 +64,5 @@ agents/generate_suggestions/__pycache__/agent.cpython-313.pyc
 backend/db/__pycache__/session.cpython-313.pyc
 backend/db/__pycache__/session.cpython-313.pyc
 frontend/growthodds/popup-mockup/updated-code.html
+
+svelte-skills/
