@@ -1,10 +1,12 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
+
 	type NavLabel = 'Home' | 'Actions' | 'Experiments';
 	type IconName = 'dashboard' | 'actions' | 'experiments' | 'notifications' | 'settings';
 	type NavItem = {
 		label: NavLabel;
 		icon: IconName;
-		href: string;
+		href?: '/dashboard';
 		active?: boolean;
 	};
 
@@ -14,12 +16,16 @@
 		'https://lh3.googleusercontent.com/aida-public/AB6AXuB5f0msn_ts-N8uqykhCiSmY7nCvduNGKaAOMnxA2xmKVyrljuPeQUufIG3mybPvhVW14cxaH2W4P0xOydEo0lTGj4XZxsx8y_CjIvc15jA1ga7smYIsAV7RGBVdL9KLpElh7j_7fq0JHGweBU_VV4m6malxmRwF8JUc_gHaxQein14duB6T5_PBuIKoqSOZGCNvFyVwapXzthKXrlweScPIolbkkBIaAACNhLIYy7wjg3zHxISJb93vy8y-kcPT35HjOjzt5wTwI-2';
 
 	const navItems = $derived([
-		{ label: 'Home', icon: 'dashboard', href: '/dashboard', active: activeItem === 'Home' },
-		{ label: 'Actions', icon: 'actions', href: '/actions', active: activeItem === 'Actions' },
+		{
+			label: 'Home',
+			icon: 'dashboard',
+			href: '/dashboard',
+			active: activeItem === 'Home'
+		},
+		{ label: 'Actions', icon: 'actions', active: activeItem === 'Actions' },
 		{
 			label: 'Experiments',
 			icon: 'experiments',
-			href: '/experiements',
 			active: activeItem === 'Experiments'
 		}
 	] satisfies NavItem[]);
@@ -74,41 +80,78 @@
 
 		<nav class="flex items-center gap-1 rounded-full bg-white/60 p-1 md:gap-2">
 			{#each navItems as item (item.label)}
-				<a
-					href={item.href}
-					aria-current={item.active ? 'page' : undefined}
-					class={[
-						'inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm transition-colors md:px-4',
-						item.active
-							? 'bg-[var(--color-primary-fixed)] font-semibold text-[var(--color-primary)]'
-							: 'text-black/45 hover:text-[var(--color-primary-soft)]'
-					]}
-				>
-					<span
+				{#if item.href}
+					<a
+						href={resolve(item.href)}
+						aria-current={item.active ? 'page' : undefined}
 						class={[
-							'inline-flex h-8 w-8 items-center justify-center rounded-full',
+							'inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm transition-colors md:px-4',
 							item.active
-								? 'bg-white text-[var(--color-primary)]'
-								: 'bg-[var(--color-surface-low)] text-black/55'
+								? 'bg-[var(--color-primary-fixed)] font-semibold text-[var(--color-primary)]'
+								: 'text-black/45 hover:text-[var(--color-primary-soft)]'
 						]}
 					>
-						<svg
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="1.65"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							class="h-4 w-4"
-							aria-hidden="true"
+						<span
+							class={[
+								'inline-flex h-8 w-8 items-center justify-center rounded-full',
+								item.active
+									? 'bg-white text-[var(--color-primary)]'
+									: 'bg-[var(--color-surface-low)] text-black/55'
+							]}
 						>
-							{#each iconPaths[item.icon] as path (`${item.icon}-${path}`)}
-								<path d={path}></path>
-							{/each}
-						</svg>
+							<svg
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.65"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								class="h-4 w-4"
+								aria-hidden="true"
+							>
+								{#each iconPaths[item.icon] as path (`${item.icon}-${path}`)}
+									<path d={path}></path>
+								{/each}
+							</svg>
+						</span>
+						<span class="font-display text-sm font-bold">{item.label}</span>
+					</a>
+				{:else}
+					<span
+						aria-disabled="true"
+						class={[
+							'inline-flex cursor-default items-center gap-2 rounded-full px-3 py-2 text-sm md:px-4',
+							item.active
+								? 'bg-[var(--color-primary-fixed)] font-semibold text-[var(--color-primary)]'
+								: 'text-black/35'
+						]}
+					>
+						<span
+							class={[
+								'inline-flex h-8 w-8 items-center justify-center rounded-full',
+								item.active
+									? 'bg-white text-[var(--color-primary)]'
+									: 'bg-[var(--color-surface-low)] text-black/45'
+							]}
+						>
+							<svg
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.65"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								class="h-4 w-4"
+								aria-hidden="true"
+							>
+								{#each iconPaths[item.icon] as path (`${item.icon}-${path}`)}
+									<path d={path}></path>
+								{/each}
+							</svg>
+						</span>
+						<span class="font-display text-sm font-bold">{item.label}</span>
 					</span>
-					<span class="font-display text-sm font-bold">{item.label}</span>
-				</a>
+				{/if}
 			{/each}
 		</nav>
 
