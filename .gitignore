@@ -33,3 +33,6 @@ frontend/growthodds/GEMINI.md
 frontend/growthodds/README.md
 frontend/growthodds/.gemini/
 frontend/growthodds/.mcp.json
+
+# Backend
+agents/generate_suggestions/.env
