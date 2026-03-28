@@ -9,7 +9,14 @@
 		| 'settings'
 		| 'users'
 		| 'engagement'
-		| 'science';
+		| 'science'
+		| 'swipe'
+		| 'close'
+		| 'info'
+		| 'trend'
+		| 'refresh'
+		| 'copy'
+		| 'send';
 
 	type NavItem = {
 		label: string;
@@ -55,6 +62,23 @@
 			icon: 'science'
 		}
 	];
+
+	const actionTitle = 'Post comparison of your product and its top competitor on X';
+	const actionReason = 'Reason: High engagement on competitor threads';
+	const actionOdds = 'Odds: 84.2% Success';
+	const steeringPlaceholder = 'e.g., focus on new features or highlight pricing';
+	const generatedPost =
+		'Our new dashboard outperforms the competition by simplifying the user journey. See why GrowthOdds is the new standard for startups. #Growth #Startup';
+	let isModalOpen = $state(false);
+
+	$effect(() => {
+		const previousOverflow = document.body.style.overflow;
+		document.body.style.overflow = isModalOpen ? 'hidden' : '';
+
+		return () => {
+			document.body.style.overflow = previousOverflow;
+		};
+	});
 
 	const iconPaths: Record<IconName, string[]> = {
 		dashboard: [
@@ -102,7 +126,27 @@
 			'M9 4.75v4.5l-3.5 6.25A3 3 0 0 0 8.12 20h7.76a3 3 0 0 0 2.62-4.5L15 9.25v-4.5',
 			'M8.25 4.75h7.5',
 			'M9.5 15c1 .9 2.091 1.35 3.273 1.35 1.027 0 1.936-.25 2.727-.75'
-		]
+		],
+		swipe: [
+			'M6.5 8.25h5.25V3.75',
+			'M17.5 15.75h-5.25v4.5',
+			'M11.75 4.25 5.25 10.75',
+			'M12.25 19.75 18.75 13.25'
+		],
+		close: ['M6 6l12 12', 'M18 6 6 18'],
+		info: ['M12 17v-5', 'M12 8.5h.01', 'M12 3.75a8.25 8.25 0 1 1 0 16.5 8.25 8.25 0 0 1 0-16.5Z'],
+		trend: ['M5.75 16.25 10 12l3 3 5.25-6.25', 'M14.75 8.75h3.5v3.5'],
+		refresh: [
+			'M16.75 9.25A5.5 5.5 0 0 0 7.5 8.1',
+			'M7.25 14.75A5.5 5.5 0 0 0 16.5 15.9',
+			'M16.75 5.75v3.5h-3.5',
+			'M7.25 18.25v-3.5h3.5'
+		],
+		copy: [
+			'M9.25 9.25h7.5a1 1 0 0 1 1 1v7.5a1 1 0 0 1-1 1h-7.5a1 1 0 0 1-1-1v-7.5a1 1 0 0 1 1-1Z',
+			'M7.5 14.75h-1.25a1 1 0 0 1-1-1v-7.5a1 1 0 0 1 1-1h7.5a1 1 0 0 1 1 1V7.5'
+		],
+		send: ['M4.75 12h12.5', 'M13.75 7 19 12l-5.25 5']
 	};
 </script>
 
@@ -279,6 +323,7 @@
 					<div class="mt-10 flex flex-col items-center gap-6">
 						<button
 							type="button"
+							onclick={() => (isModalOpen = true)}
 							class="group inline-flex items-center gap-3 rounded-xl bg-primary-gradient px-8 py-4 font-display text-lg font-bold text-white shadow-[0_24px_50px_-20px_rgba(0,53,40,0.45)] transition-transform duration-300 hover:-translate-y-0.5"
 						>
 							<span>Run Action</span>
@@ -372,4 +417,245 @@
 			</section>
 		</div>
 	</main>
+
+	{#if isModalOpen}
+		<button
+			type="button"
+			class="fixed inset-0 z-50 bg-[rgba(25,28,28,0.22)] backdrop-blur-sm"
+			aria-label="Close popup overlay"
+			onclick={() => (isModalOpen = false)}
+		></button>
+
+		<section class="fixed inset-0 z-[60] overflow-y-auto">
+			<div class="flex min-h-full items-center justify-center p-4 md:p-6">
+				<div class="w-full max-w-[36rem] overflow-hidden rounded-[1.6rem] border border-black/6 bg-white/88 shadow-[0_28px_70px_rgba(25,28,28,0.22)] backdrop-blur-xl">
+					<header class="flex items-center justify-between border-b border-black/6 px-6 py-5 md:px-7">
+						<div class="flex items-center gap-3">
+							<span class="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-[var(--color-primary)] text-white shadow-[0_12px_24px_rgba(0,53,40,0.2)]">
+								<svg
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="1.8"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									class="h-5 w-5"
+									aria-hidden="true"
+								>
+									{#each iconPaths.swipe as path (`modal-swipe-${path}`)}
+										<path d={path}></path>
+									{/each}
+								</svg>
+							</span>
+
+							<h2 class="font-display text-[1.9rem] font-extrabold tracking-tight text-[var(--color-primary)]">
+								Execute Move
+							</h2>
+						</div>
+
+						<button
+							type="button"
+							aria-label="Close popup"
+							onclick={() => (isModalOpen = false)}
+							class="inline-flex h-10 w-10 items-center justify-center rounded-full text-black/55 transition-colors hover:bg-[var(--color-surface-low)] hover:text-[var(--color-foreground)]"
+						>
+							<svg
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								class="h-5 w-5"
+								aria-hidden="true"
+							>
+								{#each iconPaths.close as path (`close-${path}`)}
+									<path d={path}></path>
+								{/each}
+							</svg>
+						</button>
+					</header>
+
+					<div class="modal-scroll max-h-[44rem] space-y-8 overflow-y-auto px-6 py-6 md:px-7">
+						<section class="space-y-4">
+							<p class="text-[0.68rem] font-bold uppercase tracking-[0.24em] text-black/45">
+								Action Summary
+							</p>
+
+							<div class="rounded-[1.25rem] border border-black/5 bg-[var(--color-surface-low)] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.65)]">
+								<div class="flex gap-4">
+									<div class="w-1 rounded-full bg-[var(--color-primary)]"></div>
+
+									<div class="flex-1">
+										<h3 class="font-display text-[1.35rem] font-extrabold leading-tight text-[var(--color-primary)]">
+											{actionTitle}
+										</h3>
+
+										<div class="mt-4 flex flex-wrap gap-3">
+											<div class="inline-flex items-center gap-2 rounded-full border border-black/6 bg-white px-3 py-2 text-xs font-semibold text-black/55 shadow-sm">
+												<svg
+													viewBox="0 0 24 24"
+													fill="none"
+													stroke="currentColor"
+													stroke-width="1.65"
+													stroke-linecap="round"
+													stroke-linejoin="round"
+													class="h-3.5 w-3.5"
+													aria-hidden="true"
+												>
+													{#each iconPaths.info as path (`info-${path}`)}
+														<path d={path}></path>
+													{/each}
+												</svg>
+												<span>{actionReason}</span>
+											</div>
+
+											<div class="inline-flex items-center gap-2 rounded-full bg-[var(--color-primary-fixed)] px-3 py-2 text-xs font-bold text-[var(--color-primary)] shadow-sm">
+												<svg
+													viewBox="0 0 24 24"
+													fill="none"
+													stroke="currentColor"
+													stroke-width="1.75"
+													stroke-linecap="round"
+													stroke-linejoin="round"
+													class="h-3.5 w-3.5"
+													aria-hidden="true"
+												>
+													{#each iconPaths.trend as path (`trend-${path}`)}
+														<path d={path}></path>
+													{/each}
+												</svg>
+												<span>{actionOdds}</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</section>
+
+						<section class="space-y-4">
+							<p class="text-[0.68rem] font-bold uppercase tracking-[0.24em] text-black/45">
+								Steering Input
+							</p>
+
+							<input
+								type="text"
+								placeholder={steeringPlaceholder}
+								class="w-full rounded-[1rem] border border-transparent bg-[var(--color-surface-low)] px-4 py-3.5 text-sm font-medium text-[var(--color-foreground)] outline-none transition focus:border-[var(--color-primary)]/20 focus:bg-white focus:ring-2 focus:ring-[var(--color-primary)]/10"
+							/>
+						</section>
+
+						<section class="space-y-4">
+							<div class="flex items-center justify-between gap-4">
+								<p class="text-[0.68rem] font-bold uppercase tracking-[0.24em] text-black/45">
+									AI Generated Post
+								</p>
+
+								<button
+									type="button"
+									class="inline-flex items-center gap-1.5 text-xs font-bold text-[var(--color-primary)] transition hover:opacity-70"
+								>
+									<svg
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="1.75"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										class="h-3.5 w-3.5"
+										aria-hidden="true"
+									>
+										{#each iconPaths.refresh as path (`refresh-${path}`)}
+											<path d={path}></path>
+										{/each}
+									</svg>
+									<span>Regenerate</span>
+								</button>
+							</div>
+
+							<div class="rounded-[1.25rem] border border-black/5 bg-white p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.65),0_20px_40px_rgba(25,28,28,0.03)]">
+								<textarea
+									readonly
+									class="modal-scroll min-h-44 w-full resize-none border-0 bg-transparent p-0 text-base leading-8 text-[var(--color-foreground)] outline-none"
+								>{generatedPost}</textarea>
+
+								<div class="mt-4 flex items-center justify-end gap-3 border-t border-black/6 pt-4">
+									<span class="text-[0.62rem] font-bold uppercase tracking-[0.18em] text-black/25">
+										142 Characters
+									</span>
+
+									<button
+										type="button"
+										aria-label="Copy generated post"
+										class="inline-flex h-7 w-7 items-center justify-center rounded-full text-black/45 transition hover:bg-[var(--color-surface-low)] hover:text-[var(--color-primary)]"
+									>
+										<svg
+											viewBox="0 0 24 24"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="1.7"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											class="h-4 w-4"
+											aria-hidden="true"
+										>
+											{#each iconPaths.copy as path (`copy-${path}`)}
+												<path d={path}></path>
+											{/each}
+										</svg>
+									</button>
+								</div>
+							</div>
+						</section>
+					</div>
+
+					<footer class="flex items-center justify-between bg-[linear-gradient(180deg,rgba(243,244,243,0.55),rgba(243,244,243,0.8))] px-6 py-5 md:px-7">
+						<button
+							type="button"
+							onclick={() => (isModalOpen = false)}
+							class="text-sm font-bold text-black/65 transition hover:text-[var(--color-foreground)]"
+						>
+							Cancel
+						</button>
+
+						<button
+							type="button"
+							class="inline-flex items-center gap-2 rounded-[0.85rem] bg-[linear-gradient(135deg,var(--color-primary),var(--color-primary-soft))] px-6 py-3.5 text-sm font-bold text-white shadow-[0_18px_32px_rgba(0,53,40,0.28)] transition hover:-translate-y-0.5"
+						>
+							<span>Execute Action</span>
+							<svg
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.9"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								class="h-4 w-4"
+								aria-hidden="true"
+							>
+								{#each iconPaths.send as path (`send-${path}`)}
+									<path d={path}></path>
+								{/each}
+							</svg>
+						</button>
+					</footer>
+				</div>
+			</div>
+		</section>
+	{/if}
 </div>
+
+<style>
+	.modal-scroll::-webkit-scrollbar {
+		width: 6px;
+	}
+
+	.modal-scroll::-webkit-scrollbar-track {
+		background: transparent;
+	}
+
+	.modal-scroll::-webkit-scrollbar-thumb {
+		border-radius: 999px;
+		background: rgb(25 28 28 / 0.18);
+	}
+</style>
