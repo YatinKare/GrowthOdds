@@ -1,5 +1,6 @@
-from typing import List, Optional
-from sqlmodel import Field, SQLModel, Relationship
+import datetime
+from typing import Optional
+from sqlmodel import Field, SQLModel
 
 class CompanyInfo(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
@@ -8,8 +9,31 @@ class CompanyInfo(SQLModel, table=True):
     industry: str
 
 class Experiment(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
-    name: str
-    description: str
-    outcome: str
-    company_id: int = Field(foreign_key="companyinfo.id")
+    __tablename__ = "experiments"
+    id: str = Field(primary_key=True)
+    user_id: int
+    product_id: Optional[str] = None
+    title: str
+    type: str
+    goal: str
+    channel: str
+    user_note: Optional[str] = None
+    status: str = "queued"
+    created_at: datetime.datetime = Field(default_factory=datetime.datetime.utcnow)
+
+class ExperimentRun(SQLModel, table=True):
+    __tablename__ = "experiment_runs"
+    id: str = Field(primary_key=True)
+    experiment_id: str = Field(foreign_key="experiments.id")
+    status: str
+    plan_json: Optional[str] = None
+    started_at: Optional[datetime.datetime] = None
+    completed_at: Optional[datetime.datetime] = None
+
+class ExperimentOutput(SQLModel, table=True):
+    __tablename__ = "experiment_outputs"
+    id: str = Field(primary_key=True)
+    experiment_id: str = Field(foreign_key="experiments.id")
+    kind: str
+    label: str
+    content: str

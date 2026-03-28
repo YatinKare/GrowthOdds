@@ -1,0 +1,132 @@
+example request:
+{
+  "appName": "my_sample_agent",
+  "userId": "u_123",
+  "sessionId": "s_abc",
+  "newMessage": {
+    "role": "user",
+    "parts": [
+      { "text": "What is the capital of France?" }
+    ]
+  }
+}
+
+# input
+
+RunAgentRequestCollapse allobject
+appNamestring
+userIdstring
+sessionIdstring
+newMessageCollapse all(object | null)
+Any ofCollapse all(object | null)
+#0 ContentCollapse allobject
+Contains the multi-part content of a message.
+
+partsCollapse all(array<object> | null)
+List of parts that constitute a single message. Each part may have a different IANA MIME type.
+
+Any ofCollapse all(array<object> | null)
+#0Collapse allarray<object>
+ItemsCollapse allobject
+A datatype containing media content.
+
+Exactly one field within a Part should be set, representing the specific type of content being conveyed. Using multiple fields within the same Part instance is considered invalid.
+
+mediaResolutionExpand all(object | null)
+codeExecutionResultExpand all(object | null)
+executableCodeExpand all(object | null)
+fileDataExpand all(object | null)
+functionCallExpand all(object | null)
+functionResponseExpand all(object | null)
+inlineDataExpand all(object | null)
+textCollapse all(string | null)
+Optional. The text content of the part. When sent from the VSCode Gemini Code Assist extension, references to @mentioned items will be converted to markdown boldface text. For example @my-repo will be converted to and sent as **my-repo** by the IDE agent.
+
+Any ofCollapse all(string | null)
+#0string
+#1null
+thoughtExpand all(boolean | null)
+thoughtSignatureExpand all(string | null)
+videoMetadataExpand all(object | null)
+toolCallExpand all(object | null)
+toolResponseExpand all(object | null)
+partMetadataExpand all(object | null)
+Additional propertiesforbidden
+#1null
+roleExpand all(string | null)
+Additional propertiesforbidden
+#1null
+streamingExpand allboolean
+stateDeltaExpand all(object | null)
+functionCallEventIdExpand all(string | null)
+invocationIdExpand all(string | null)
+
+# output
+Response Run Agent Run PostCollapse allarray<object>
+ItemsCollapse allobject
+Represents an event in a conversation between agents and users.
+
+It is used to store the content of the conversation, as well as the actions taken by the agents like function calls, etc.
+
+modelVersionExpand all(string | null)
+contentCollapse all(object | null)
+Any ofCollapse all(object | null)
+#0 ContentCollapse allobject
+Contains the multi-part content of a message.
+
+partsCollapse all(array<object> | null)
+List of parts that constitute a single message. Each part may have a different IANA MIME type.
+
+Any ofCollapse all(array<object> | null)
+#0Collapse allarray<object>
+ItemsCollapse allobject
+A datatype containing media content.
+
+Exactly one field within a Part should be set, representing the specific type of content being conveyed. Using multiple fields within the same Part instance is considered invalid.
+
+mediaResolutionExpand all(object | null)
+codeExecutionResultExpand all(object | null)
+executableCodeExpand all(object | null)
+fileDataExpand all(object | null)
+functionCallExpand all(object | null)
+functionResponseExpand all(object | null)
+inlineDataExpand all(object | null)
+textCollapse all(string | null)
+Optional. The text content of the part. When sent from the VSCode Gemini Code Assist extension, references to @mentioned items will be converted to markdown boldface text. For example @my-repo will be converted to and sent as **my-repo** by the IDE agent.
+
+Any ofExpand all(string | null)
+thoughtExpand all(boolean | null)
+thoughtSignatureExpand all(string | null)
+videoMetadataExpand all(object | null)
+toolCallExpand all(object | null)
+toolResponseExpand all(object | null)
+partMetadataExpand all(object | null)
+Additional propertiesforbidden
+#1null
+roleExpand all(string | null)
+Additional propertiesforbidden
+#1null
+groundingMetadataExpand all(object | null)
+partialExpand all(boolean | null)
+turnCompleteExpand all(boolean | null)
+finishReasonExpand all(string | null)
+errorCodeExpand all(string | null)
+errorMessageExpand all(string | null)
+interruptedExpand all(boolean | null)
+customMetadataExpand all(object | null)
+usageMetadataExpand all(object | null)
+liveSessionResumptionUpdateExpand all(object | null)
+inputTranscriptionExpand all(object | null)
+outputTranscriptionExpand all(object | null)
+avgLogprobsExpand all(number | null)
+logprobsResultExpand all(object | null)
+cacheMetadataExpand all(object | null)
+citationMetadataExpand all(object | null)
+interactionIdExpand all(string | null)
+invocationIdExpand allstring
+authorstring
+actionsExpand allobject
+longRunningToolIdsExpand all(array<string> | null)
+branchExpand all(string | null)
+idExpand allstring
+timestampnumber
