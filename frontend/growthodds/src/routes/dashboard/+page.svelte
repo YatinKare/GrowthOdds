@@ -1,5 +1,13 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
+
 	import AppNavbar from '$lib/components/AppNavbar.svelte';
+	import {
+		getApiErrorMessage,
+		type CreateExperimentRequest,
+		type CreateExperimentResponse
+	} from '$lib/experiments';
 
 	type IconName =
 		| 'dashboard'
@@ -29,6 +37,8 @@
 		change?: string;
 	};
 
+	type SubmitState = 'idle' | 'submitting' | 'error';
+
 	const statCards: StatCard[] = [
 		{
 			label: 'Growth Base',
@@ -56,8 +66,24 @@
 	const actionOdds = 'Odds: 84.2% Success';
 	const steeringPlaceholder =
 		'Describe the specifics of your move here (e.g., focus on new features, highlight pricing, or set a specific tone)...';
+
 	let isModalOpen = $state(false);
 	let experimentMode = $state<'single' | 'ab'>('ab');
+	let userNote = $state('');
+	let submitState = $state<SubmitState>('idle');
+	let submitError = $state<string | null>(null);
+
+	const mappedExperimentType = $derived(experimentMode === 'single' ? 'single' : 'ab_test');
+	const trimmedUserNote = $derived(userNote.trim());
+	const isSubmitting = $derived(submitState === 'submitting');
+	const submitButtonLabel = $derived(
+		isSubmitting
+			? 'Starting experiment...'
+			: experimentMode === 'single'
+				? 'Run Single Post'
+				: 'Run A/B Test'
+	);
+	const activeModeLabel = $derived(experimentMode === 'single' ? 'Single Post' : 'A/B Test');
 
 	$effect(() => {
 		const previousOverflow = document.body.style.overflow;
@@ -67,6 +93,77 @@
 			document.body.style.overflow = previousOverflow;
 		};
 	});
+
+	function openModal() {
+		submitState = 'idle';
+		submitError = null;
+		isModalOpen = true;
+	}
+
+	function closeModal() {
+		if (isSubmitting) {
+			return;
+		}
+
+		isModalOpen = false;
+	}
+
+	async function submitExperiment(event: SubmitEvent) {
+		event.preventDefault();
+
+		if (isSubmitting) {
+			return;
+		}
+
+		submitState = 'submitting';
+		submitError = null;
+
+		const payload: CreateExperimentRequest = {
+			product_id: 'prod_123',
+			created_by: '1',
+			experiment_title: actionTitle,
+			experiment_type: mappedExperimentType,
+			goal: 'increase signups',
+			channel: 'x',
+			user_note: trimmedUserNote
+		};
+
+		try {
+			const response = await fetch('/api/experiment', {
+				method: 'POST',
+				headers: {
+					'content-type': 'application/json',
+					accept: 'application/json'
+				},
+				body: JSON.stringify(payload)
+			});
+			const responseBody = await response.json().catch(() => null);
+
+			if (!response.ok) {
+				submitState = 'error';
+				submitError = getApiErrorMessage(responseBody, 'Unable to create experiment.');
+				return;
+			}
+
+			const createdExperiment = responseBody as CreateExperimentResponse;
+
+			if (!createdExperiment?.experiment_id) {
+				submitState = 'error';
+				submitError = 'The create response did not include an experiment ID.';
+				return;
+			}
+
+			userNote = '';
+			submitState = 'idle';
+			submitError = null;
+			isModalOpen = false;
+
+			await goto(resolve(`/experiments/${createdExperiment.experiment_id}`));
+		} catch {
+			submitState = 'error';
+			submitError = 'Unable to create experiment.';
+		}
+	}
 
 	const iconPaths: Record<IconName, string[]> = {
 		dashboard: [
@@ -197,14 +294,15 @@
 					</h1>
 
 					<p class="mt-5 max-w-2xl text-sm leading-7 text-black/55 md:text-base">
-						One clear move, timed for the current cycle. The command surface stays static for now,
-						but the layout mirrors the mockup and is ready for real data later.
+						One clear move, timed for the current cycle. This first merged slice now submits the
+						action into the backend experiment pipeline and follows the run on the detail page.
 					</p>
 
 					<div class="mt-10 flex flex-col items-center gap-6">
 						<button
 							type="button"
-							onclick={() => (isModalOpen = true)}
+							data-testid="open-create-modal"
+							onclick={openModal}
 							class="group inline-flex items-center gap-3 rounded-xl bg-primary-gradient px-8 py-4 font-display text-lg font-bold text-white shadow-[0_24px_50px_-20px_rgba(0,53,40,0.45)] transition-transform duration-300 hover:-translate-y-0.5"
 						>
 							<span>Run Action</span>
@@ -304,13 +402,16 @@
 			type="button"
 			class="fixed inset-0 z-50 bg-[rgba(25,28,28,0.22)] backdrop-blur-sm"
 			aria-label="Close popup overlay"
-			onclick={() => (isModalOpen = false)}
+			onclick={closeModal}
 		></button>
 
-		<section class="fixed inset-0 z-[60] overflow-y-auto">
+		<section class="fixed inset-0 z-[60] overflow-y-auto" aria-modal="true" role="dialog">
 			<div class="flex min-h-full items-center justify-center p-4 md:p-6">
-				<div
+				<form
 					class="w-full max-w-[36rem] overflow-hidden rounded-[1.6rem] border border-black/6 bg-white/88 shadow-[0_28px_70px_rgba(25,28,28,0.22)] backdrop-blur-xl"
+					onsubmit={submitExperiment}
+					aria-busy={isSubmitting}
+					data-testid="create-modal"
 				>
 					<header
 						class="flex items-center justify-between border-b border-black/6 px-6 py-5 md:px-7"
@@ -335,18 +436,24 @@
 								</svg>
 							</span>
 
-							<h2
-								class="font-display text-[1.9rem] font-extrabold tracking-tight text-[var(--color-primary)]"
-							>
-								Execute Move
-							</h2>
+							<div>
+								<h2
+									class="font-display text-[1.9rem] font-extrabold tracking-tight text-[var(--color-primary)]"
+								>
+									Execute Move
+								</h2>
+								<p class="mt-1 text-xs font-semibold tracking-[0.18em] text-black/42 uppercase">
+									{activeModeLabel}
+								</p>
+							</div>
 						</div>
 
 						<button
 							type="button"
 							aria-label="Close popup"
-							onclick={() => (isModalOpen = false)}
-							class="inline-flex h-10 w-10 items-center justify-center rounded-full text-black/55 transition-colors hover:bg-[var(--color-surface-low)] hover:text-[var(--color-foreground)]"
+							onclick={closeModal}
+							disabled={isSubmitting}
+							class="inline-flex h-10 w-10 items-center justify-center rounded-full text-black/55 transition-colors hover:bg-[var(--color-surface-low)] hover:text-[var(--color-foreground)] disabled:cursor-not-allowed disabled:opacity-45"
 						>
 							<svg
 								viewBox="0 0 24 24"
@@ -378,22 +485,26 @@
 									<button
 										type="button"
 										onclick={() => (experimentMode = 'single')}
-										class={`rounded-[0.7rem] px-4 py-2 text-xs font-bold transition ${
+										disabled={isSubmitting}
+										class={[
+											'rounded-[0.7rem] px-4 py-2 text-xs font-bold transition disabled:cursor-not-allowed disabled:opacity-45',
 											experimentMode === 'single'
 												? 'bg-white text-[var(--color-primary)] shadow-sm'
 												: 'text-black/45 hover:text-[var(--color-foreground)]'
-										}`}
+										]}
 									>
 										Single Post
 									</button>
 									<button
 										type="button"
 										onclick={() => (experimentMode = 'ab')}
-										class={`rounded-[0.7rem] px-4 py-2 text-xs font-bold transition ${
+										disabled={isSubmitting}
+										class={[
+											'rounded-[0.7rem] px-4 py-2 text-xs font-bold transition disabled:cursor-not-allowed disabled:opacity-45',
 											experimentMode === 'ab'
 												? 'bg-white text-[var(--color-primary)] shadow-sm'
 												: 'text-black/45 hover:text-[var(--color-foreground)]'
-										}`}
+										]}
 									>
 										A/B Test
 									</button>
@@ -460,17 +571,25 @@
 						</section>
 
 						<section class="space-y-4">
-							<p class="px-1 text-[0.68rem] font-bold tracking-[0.24em] text-black/45 uppercase">
-								Input
-							</p>
+							<div class="flex items-center justify-between gap-4 px-1">
+								<p class="text-[0.68rem] font-bold tracking-[0.24em] text-black/45 uppercase">
+									Input
+								</p>
+								<p class="text-xs text-black/45">Optional free-text steering</p>
+							</div>
 
 							<div
 								class="rounded-[1.25rem] border border-black/6 bg-white p-5 shadow-[0_18px_40px_rgba(25,28,28,0.04)] transition focus-within:ring-2 focus-within:ring-[var(--color-primary)]/10"
 							>
+								<label class="sr-only" for="user-note">Manual steering note</label>
 								<textarea
+									id="user-note"
+									bind:value={userNote}
+									data-testid="user-note-input"
 									placeholder={steeringPlaceholder}
 									spellcheck="false"
-									class="modal-scroll min-h-48 w-full resize-none border-0 bg-transparent p-0 text-sm leading-7 font-medium text-[var(--color-foreground)] outline-none"
+									disabled={isSubmitting}
+									class="modal-scroll min-h-48 w-full resize-none border-0 bg-transparent p-0 text-sm leading-7 font-medium text-[var(--color-foreground)] outline-none disabled:cursor-not-allowed disabled:opacity-70"
 								></textarea>
 
 								<div class="mt-4 flex items-center justify-end gap-3 border-t border-black/6 pt-4">
@@ -481,7 +600,8 @@
 									<button
 										type="button"
 										aria-label="Manual steering shortcut"
-										class="inline-flex h-8 w-8 items-center justify-center rounded-full text-black/45 transition hover:bg-[var(--color-surface-low)] hover:text-[var(--color-primary)]"
+										disabled={isSubmitting}
+										class="inline-flex h-8 w-8 items-center justify-center rounded-full text-black/45 transition hover:bg-[var(--color-surface-low)] hover:text-[var(--color-primary)] disabled:cursor-not-allowed disabled:opacity-45"
 									>
 										<svg
 											viewBox="0 0 24 24"
@@ -501,6 +621,15 @@
 								</div>
 							</div>
 						</section>
+
+						{#if submitError}
+							<p
+								class="rounded-2xl border border-[var(--color-secondary)]/12 bg-[var(--color-secondary-soft)] px-4 py-3 text-sm font-semibold text-[var(--color-secondary)]"
+								data-testid="create-error"
+							>
+								{submitError}
+							</p>
+						{/if}
 					</div>
 
 					<footer
@@ -508,50 +637,38 @@
 					>
 						<button
 							type="button"
-							onclick={() => (isModalOpen = false)}
-							class="text-sm font-bold text-black/65 transition hover:text-[var(--color-foreground)]"
+							onclick={closeModal}
+							disabled={isSubmitting}
+							class="text-sm font-bold text-black/65 transition hover:text-[var(--color-foreground)] disabled:cursor-not-allowed disabled:opacity-45"
 						>
 							Cancel
 						</button>
 
 						<button
-							type="button"
-							class="inline-flex items-center gap-2 rounded-[0.85rem] bg-[linear-gradient(135deg,var(--color-primary),var(--color-primary-soft))] px-6 py-3.5 text-sm font-bold text-white shadow-[0_18px_32px_rgba(0,53,40,0.28)] transition hover:-translate-y-0.5"
+							type="submit"
+							data-testid="submit-create"
+							disabled={isSubmitting}
+							class="inline-flex items-center gap-2 rounded-[0.85rem] bg-[linear-gradient(135deg,var(--color-primary),var(--color-primary-soft))] px-6 py-3.5 text-sm font-bold text-white shadow-[0_18px_32px_rgba(0,53,40,0.28)] transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-80 disabled:hover:translate-y-0"
 						>
-							<span>Execute Action</span>
+							<span>{submitButtonLabel}</span>
 							<svg
 								viewBox="0 0 24 24"
 								fill="none"
 								stroke="currentColor"
-								stroke-width="1.9"
+								stroke-width="1.75"
 								stroke-linecap="round"
 								stroke-linejoin="round"
-								class="h-4 w-4"
+								class="h-4.5 w-4.5"
 								aria-hidden="true"
 							>
-								{#each iconPaths.send as path (`send-${path}`)}
+								{#each isSubmitting ? iconPaths.refresh : iconPaths.send as path (`submit-${path}`)}
 									<path d={path}></path>
 								{/each}
 							</svg>
 						</button>
 					</footer>
-				</div>
+				</form>
 			</div>
 		</section>
 	{/if}
 </div>
-
-<style>
-	.modal-scroll::-webkit-scrollbar {
-		width: 6px;
-	}
-
-	.modal-scroll::-webkit-scrollbar-track {
-		background: transparent;
-	}
-
-	.modal-scroll::-webkit-scrollbar-thumb {
-		border-radius: 999px;
-		background: rgb(25 28 28 / 0.18);
-	}
-</style>

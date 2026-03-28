@@ -9,6 +9,21 @@ from db.session import engine
 from config import ADK_SERVER_URL
 
 class ExperimentService:
+    def list_experiments(self, db: Session) -> List[Dict[str, Any]]:
+        experiments = db.exec(
+            select(Experiment).order_by(Experiment.created_at.desc())
+        ).all()
+
+        return [
+            {
+                "id": experiment.id,
+                "title": experiment.title,
+                "status": experiment.status,
+                "created_at": experiment.created_at,
+            }
+            for experiment in experiments
+        ]
+
     async def process_experiment(self, experiment_id: str) -> None:
         with Session(engine) as db:
             experiment = db.exec(select(Experiment).where(Experiment.id == experiment_id)).first()

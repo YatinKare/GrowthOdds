@@ -13,7 +13,6 @@ frontend/growthodds/.DS_Store
 frontend/growthodds/Thumbs.db
 
 # pycache
-agents/generate_suggestions/__pycache__/
 
 # Env
 frontend/growthodds/.env
@@ -45,22 +44,12 @@ agents/generate_suggestions/.env
 # uv init
 agents/.python-version
 agents/generate_suggestions/.adk
-agents/generate_suggestions/__pycache__
 agents/uv.lock
 
 
-backend/__pycache__/config.cpython-313.pyc
-.gitignore
-backend/db/__pycache__/session.cpython-313.pyc
-backend/db/__pycache__/models.cpython-313.pyc
-backend/db/__pycache__/session.cpython-313.pyc
-backend/routes/__pycache__/api.cpython-313.pyc
-backend/routes/__pycache__/experiment.cpython-313.pyc
-backend/routes/__pycache__/api.cpython-313.pyc
-backend/db/__pycache__/session.cpython-313.pyc
-backend/services/__pycache__/experiment_service.cpython-313.pyc
-backend/services/__pycache__/__init__.cpython-313.pyc
-agents/generate_suggestions/__pycache__/agent.cpython-313.pyc
-backend/db/__pycache__/session.cpython-313.pyc
-backend/db/__pycache__/session.cpython-313.pyc
 frontend/growthodds/popup-mockup/updated-code.html
+
+svelte-skills/
+
+__pycache__/
+*.pyc

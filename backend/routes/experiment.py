@@ -1,7 +1,6 @@
 import uuid
 from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
 from pydantic import BaseModel
-from typing import Optional, List
 from sqlmodel import Session, select
 from db.session import get_db
 from db.models import Experiment, ExperimentRun, ExperimentOutput
@@ -17,6 +16,10 @@ class ExperimentInput(BaseModel):
     goal: str
     channel: str
     user_note: str
+
+@router.get("/")
+async def list_experiments(db: Session = Depends(get_db)):
+    return {"experiments": experiment_service.list_experiments(db)}
 
 @router.post("/")
 async def run_experiment_workflow(
