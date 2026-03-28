@@ -4,6 +4,7 @@
 	type NavItem = {
 		label: NavLabel;
 		icon: IconName;
+		href: string;
 		active?: boolean;
 	};
 
@@ -13,9 +14,14 @@
 		'https://lh3.googleusercontent.com/aida-public/AB6AXuB5f0msn_ts-N8uqykhCiSmY7nCvduNGKaAOMnxA2xmKVyrljuPeQUufIG3mybPvhVW14cxaH2W4P0xOydEo0lTGj4XZxsx8y_CjIvc15jA1ga7smYIsAV7RGBVdL9KLpElh7j_7fq0JHGweBU_VV4m6malxmRwF8JUc_gHaxQein14duB6T5_PBuIKoqSOZGCNvFyVwapXzthKXrlweScPIolbkkBIaAACNhLIYy7wjg3zHxISJb93vy8y-kcPT35HjOjzt5wTwI-2';
 
 	const navItems = $derived([
-		{ label: 'Home', icon: 'dashboard', active: activeItem === 'Home' },
-		{ label: 'Actions', icon: 'actions', active: activeItem === 'Actions' },
-		{ label: 'Experiments', icon: 'experiments', active: activeItem === 'Experiments' }
+		{ label: 'Home', icon: 'dashboard', href: '/dashboard', active: activeItem === 'Home' },
+		{ label: 'Actions', icon: 'actions', href: '/actions', active: activeItem === 'Actions' },
+		{
+			label: 'Experiments',
+			icon: 'experiments',
+			href: '/experiements',
+			active: activeItem === 'Experiments'
+		}
 	] satisfies NavItem[]);
 
 	const iconPaths: Record<IconName, string[]> = {
@@ -68,8 +74,8 @@
 
 		<nav class="flex items-center gap-1 rounded-full bg-white/60 p-1 md:gap-2">
 			{#each navItems as item (item.label)}
-				<button
-					type="button"
+				<a
+					href={item.href}
 					aria-current={item.active ? 'page' : undefined}
 					class={[
 						'inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm transition-colors md:px-4',
@@ -102,7 +108,7 @@
 						</svg>
 					</span>
 					<span class="font-display text-sm font-bold">{item.label}</span>
-				</button>
+				</a>
 			{/each}
 		</nav>
 
