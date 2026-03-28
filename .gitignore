@@ -1,1 +1,35 @@
-.env
+frontend/growthodds/node_modules
+
+# Output
+frontend/growthodds/.output
+frontend/growthodds/.vercel
+frontend/growthodds/.netlify
+frontend/growthodds/.wrangler
+frontend/growthodds/.svelte-kit
+frontend/growthodds/build
+
+# OS
+frontend/growthodds/.DS_Store
+frontend/growthodds/Thumbs.db
+
+# pycache
+agents/generate_suggestions/__pycache__/
+
+# Env
+frontend/growthodds/.env
+frontend/growthodds/.env.*
+frontend/growthodds/!.env.example
+frontend/growthodds/!.env.test
+
+# Vite
+frontend/growthodds/vite.config.js.timestamp-*
+frontend/growthodds/vite.config.ts.timestamp-*
+# Playwright
+frontend/growthodds/test-results
+
+# agents
+frontend/growthodds/CLAUDE.md
+frontend/growthodds/GEMINI.md
+frontend/growthodds/README.md
+frontend/growthodds/.gemini/
+frontend/growthodds/.mcp.json
