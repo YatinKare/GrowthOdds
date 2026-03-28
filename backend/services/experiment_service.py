@@ -70,62 +70,72 @@ class ExperimentService:
                     session_data = session_response.json()
                     assigned_session_id = session_data.get("id")
 
-                    # 2. Re-map payload with correctly generated sessionId
-                    adk_payload = {
-                        "appName": app_name,
-                        "userId": user_id_str,
-                        "sessionId": assigned_session_id,
-                        "newMessage": {
-                            "role": "user",
-                            "parts": [
-                                {"text": json.dumps(context_payload)}
-                            ]
-                        },
-                        "streaming": False
-                    }
+                    try:
+                        # 2. Re-map payload with correctly generated sessionId
+                        adk_payload = {
+                            "appName": app_name,
+                            "userId": user_id_str,
+                            "sessionId": assigned_session_id,
+                            "newMessage": {
+                                "role": "user",
+                                "parts": [
+                                    {"text": json.dumps(context_payload)}
+                                ]
+                            },
+                            "streaming": False
+                        }
 
-                    # 3. Post to the actual run endpoint
-                    run_url = f"{ADK_SERVER_URL}/run"
-                    response = await client.post(run_url, json=adk_payload)
-                    response.raise_for_status()
-                    
-                    # ADK Output Schema parse
-                    adk_response = response.json()
-                    
-                    plan_data = {}
-                    outputs_data = []
+                        # 3. Post to the actual run endpoint
+                        run_url = f"{ADK_SERVER_URL}/run"
+                        response = await client.post(run_url, json=adk_payload)
+                        response.raise_for_status()
+                        
+                        # ADK Output Schema parse
+                        adk_response = response.json()
+                        
+                        plan_data = {}
+                        outputs_data = []
 
-                    if isinstance(adk_response, list):
-                        for item in adk_response:
-                            author = item.get("author", "")
-                            state_delta = item.get("actions", {}).get("stateDelta", {})
-                            
-                            if "past_experiements_reccomendations" in state_delta:
-                                plan_data["past_experiements_reccomendations"] = state_delta["past_experiements_reccomendations"]
+                        if isinstance(adk_response, list):
+                            for item in adk_response:
+                                author = item.get("author", "")
+                                state_delta = item.get("actions", {}).get("stateDelta", {})
                                 
-                            if "post_content" in state_delta:
-                                outputs_data.append({
-                                    "kind": "post",
-                                    "label": author,
-                                    "content": state_delta["post_content"]
-                                })
+                                if "past_experiements_reccomendations" in state_delta:
+                                    plan_data["past_experiements_reccomendations"] = state_delta["past_experiements_reccomendations"]
+                                    
+                                if "post_content" in state_delta:
+                                    outputs_data.append({
+                                        "kind": "post",
+                                        "label": author,
+                                        "content": state_delta["post_content"]
+                                    })
 
-                    # Persist run parsing details
-                    run.plan_json = json.dumps(plan_data)
-                    run.status = "completed"
-                    run.completed_at = datetime.datetime.utcnow()
+                        # Persist run parsing details
+                        run.plan_json = json.dumps(plan_data)
+                        run.status = "completed"
+                        run.completed_at = datetime.datetime.utcnow()
 
-                    for out in outputs_data:
-                        db.add(ExperimentOutput(
-                            id=str(uuid.uuid4()),
-                            experiment_id=experiment_id,
-                            kind=out.get("kind", ""),
-                            label=out.get("label", ""),
-                            content=out.get("content", "")
-                        ))
+                        for out in outputs_data:
+                            db.add(ExperimentOutput(
+                                id=str(uuid.uuid4()),
+                                experiment_id=experiment_id,
+                                kind=out.get("kind", ""),
+                                label=out.get("label", ""),
+                                content=out.get("content", "")
+                            ))
 
-                    experiment.status = "completed"
-                    db.commit()
+                        experiment.status = "completed"
+                        db.commit()
+
+                    finally:
+                        # 4. Clean up the ADK session to avoid memory bloat
+                        if assigned_session_id:
+                            try:
+                                delete_url = f"{ADK_SERVER_URL}/apps/{app_name}/users/{user_id_str}/sessions/{assigned_session_id}"
+                                await client.delete(delete_url)
+                            except Exception as cleanup_err:
+                                print(f"Warning: Failed to clean up ADK session {assigned_session_id}: {cleanup_err}")
 
             except Exception as e:
                 print(f"Unexpected error interfacing with ADK: {e}")

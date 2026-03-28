@@ -19,7 +19,7 @@ class Experiment(SQLModel, table=True):
     channel: str
     user_note: Optional[str] = None
     status: str = "queued"
-    created_at: datetime.datetime = Field(default_factory=datetime.datetime.utcnow)
+    created_at: datetime.datetime = Field(default_factory=datetime.datetime.now(datetime.timezone.utc))
 
 class ExperimentRun(SQLModel, table=True):
     __tablename__ = "experiment_runs"
