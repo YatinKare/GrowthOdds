@@ -15,6 +15,17 @@ export type CreateExperimentResponse = {
 	status: ExperimentStatus;
 };
 
+export type ExperimentListItem = {
+	id: string;
+	title?: string;
+	status: ExperimentStatus;
+	created_at?: string | null;
+};
+
+export type ExperimentListResponse = {
+	experiments: ExperimentListItem[];
+};
+
 export type ExperimentRecord = {
 	id: string;
 	status: ExperimentStatus;

@@ -34,6 +34,8 @@
 
 	const experimentResponse = $derived(latestResponse ?? initialResponse);
 	const activeError = $derived(fetchError ?? (dismissedInitialError ? null : initialError));
+	const experimentTitle = $derived(experimentResponse?.experiment.title || null);
+	const displayName = $derived(experimentTitle ?? experimentId);
 	const currentStatus = $derived<ExperimentStatus | null>(experimentResponse?.experiment.status ?? null);
 	const statusMessage = $derived(getExperimentStatusMessage(currentStatus));
 	const shouldPoll = $derived(
@@ -120,7 +122,7 @@
 </script>
 
 <svelte:head>
-	<title>GrowthOdds - Experiment {experimentId}</title>
+	<title>GrowthOdds - {displayName}</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 </svelte:head>
 
@@ -156,12 +158,13 @@
 							</nav>
 
 							<div>
-								<p class="text-label text-black/45">Experiment ID</p>
+								<p class="text-label text-black/45">Experiment</p>
 								<h1
-									class="mt-3 break-all font-display text-3xl leading-tight font-extrabold tracking-tight text-[var(--color-primary)] md:text-[2.75rem]"
+									class="mt-3 font-display text-3xl leading-tight font-extrabold tracking-tight text-[var(--color-primary)] md:text-[2.75rem]"
 								>
-									{experimentId}
+									{displayName}
 								</h1>
+								<p class="mt-1.5 text-xs font-medium tracking-wide text-black/35 break-all">{experimentId}</p>
 							</div>
 						</div>
 

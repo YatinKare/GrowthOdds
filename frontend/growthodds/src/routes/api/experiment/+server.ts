@@ -5,6 +5,12 @@ import type { CreateExperimentRequest } from '$lib/experiments';
 
 import type { RequestHandler } from './$types';
 
+export const GET: RequestHandler = async () => {
+	return proxyBackendJson('/api/v1/experiment/', {
+		method: 'GET'
+	});
+};
+
 export const POST: RequestHandler = async ({ request }) => {
 	let payload: CreateExperimentRequest;
 

@@ -6,7 +6,7 @@
 	type NavItem = {
 		label: NavLabel;
 		icon: IconName;
-		href?: '/dashboard';
+		href?: '/dashboard' | '/experiments';
 		active?: boolean;
 	};
 
@@ -26,6 +26,7 @@
 		{
 			label: 'Experiments',
 			icon: 'experiments',
+			href: '/experiments',
 			active: activeItem === 'Experiments'
 		}
 	] satisfies NavItem[]);
