@@ -276,6 +276,22 @@
 							</p>
 						{/if}
 					</section>
+
+					<section class="grid gap-4 md:grid-cols-2">
+						<article class="rounded-[1.5rem] bg-white/85 p-6 shadow-[0_18px_45px_rgba(25,28,28,0.05)]">
+							<p class="text-label text-black/42">Views</p>
+							<p class="mt-3 font-display text-3xl font-extrabold tracking-tight text-[var(--color-primary)]">
+								0
+							</p>
+						</article>
+
+						<article class="rounded-[1.5rem] bg-white/85 p-6 shadow-[0_18px_45px_rgba(25,28,28,0.05)]">
+							<p class="text-label text-black/42">Likes</p>
+							<p class="mt-3 font-display text-3xl font-extrabold tracking-tight text-[var(--color-primary)]">
+								0
+							</p>
+						</article>
+					</section>
 				</div>
 			</section>
 		</div>
