@@ -34,6 +34,8 @@ frontend/growthodds/README.md
 frontend/growthodds/.gemini/
 frontend/growthodds/.mcp.json
 
+# Mockups
+frontend/growthodds/mockups/
 # Backend
 agents/generate_suggestions/.env
 

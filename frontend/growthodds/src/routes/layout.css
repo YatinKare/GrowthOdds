@@ -1,1 +1,115 @@
 @import 'tailwindcss';
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap');
+
+@theme {
+	--font-sans: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace;
+	--font-display: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+
+	--color-background: #f9f9f8;
+	--color-surface: #f9f9f8;
+	--color-surface-low: #f3f4f3;
+	--color-surface-card: #ffffff;
+	--color-surface-muted: #e1e3e2;
+	--color-foreground: #191c1c;
+
+	--color-primary: #003528;
+	--color-primary-soft: #0a4d3c;
+	--color-primary-fixed: #d7f2e6;
+	--color-secondary: #b6171e;
+	--color-secondary-soft: #f5d7d9;
+	--color-outline: rgb(25 28 28 / 0.15);
+
+	--shadow-ambient: 0 24px 48px rgb(25 28 28 / 0.05);
+	--radius-button: 0.75rem;
+}
+
+
+@layer base {
+	:root {
+		color: var(--color-foreground);
+		background: var(--color-background);
+		font-family: var(--font-sans);
+	}
+
+	body {
+		min-height: 100vh;
+		background:
+			radial-gradient(circle at top left, rgb(10 77 60 / 0.08), transparent 32rem),
+			linear-gradient(180deg, #fdfdfc 0%, var(--color-background) 100%);
+		color: var(--color-foreground);
+	}
+
+	h1,
+	h2,
+	h3,
+	h4 {
+		font-family: var(--font-display);
+	}
+}
+
+@utility text-label {
+	letter-spacing: 0.05rem;
+	text-transform: uppercase;
+	font-size: 0.8125rem;
+	font-weight: 600;
+}
+
+@utility bg-primary-gradient {
+	background-image: linear-gradient(135deg, var(--color-primary), var(--color-primary-soft));
+}
+
+@utility glass-panel {
+	background-color: rgb(255 255 255 / 0.8);
+	backdrop-filter: blur(20px);
+	box-shadow: var(--shadow-ambient);
+}
+
+@layer components {
+	.theme-card {
+		background: var(--color-surface-card);
+		box-shadow: var(--shadow-ambient);
+	}
+
+	.theme-button {
+		border-radius: var(--radius-button);
+		padding: 0.875rem 1.25rem;
+		font-weight: 600;
+		transition:
+			background-color 150ms ease,
+			color 150ms ease,
+			transform 150ms ease;
+	}
+
+	.theme-button-primary {
+		background-image: linear-gradient(135deg, var(--color-primary), var(--color-primary-soft));
+		color: white;
+	}
+
+	.theme-button-primary:hover {
+		transform: translateY(-1px);
+	}
+
+	.theme-button-secondary {
+		background: var(--color-surface-low);
+		color: var(--color-foreground);
+	}
+
+	.theme-badge {
+		display: inline-flex;
+		align-items: center;
+		border-radius: 9999px;
+		padding: 0.35rem 0.7rem;
+		font-size: 0.8125rem;
+		font-weight: 600;
+	}
+
+	.theme-badge-primary {
+		background: var(--color-primary-fixed);
+		color: var(--color-primary);
+	}
+
+	.theme-badge-secondary {
+		background: var(--color-secondary-soft);
+		color: var(--color-secondary);
+	}
+}
